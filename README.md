@@ -1,5 +1,5 @@
 # bempy - Python Block-Element-Modifier Library
-`bempy` is a library for building complex classes using BEM (Block-Element-Modifier) methodology. BEM is a widely used methodology in web development to achieve modular and scalable front-end code. `pybem` **extends this methodology to other areas** of software development, making it a versatile and powerful tool *for organizing and structuring complex projects*.
+`bempy` is a library for building complex classes using BEM (Block-Element-Modifier) methodology.
 
 With `bempy`, you can build reusable blocks of code that can be easily inherited, modified, and extended to create new and complex classes. The library uses a hierarchical structure to define blocks, elements, and modifiers, making it simple to understand and maintain large projects.
 
@@ -11,8 +11,18 @@ With `bempy`, you can build reusable blocks of code that can be easily inherited
 * A flexible structure
 
 ## Concept
-`bempy` is a library for building complex classes based on the BEM methodology. The BEM methodology is a way to structure the code for complex projects that require scalable and maintainable architecture.
+`bempy` is a library for building complex classes based on the BEM methodology.
 
+### BEM
+BEM, or Block Element Modifier, is a methodology that helps developers build scalable, maintainable and reusable components for their projects.
+
+The main idea behind BEM is to encapsulate appearance, logic and content of a component into distinct blocks that can be easily re-used and modified without affecting the rest of the application. Each block is treated as an independent entity and can be combined with other blocks to create complex structures.
+
+In BEM, a block is the main building block of the application, and it can consist of multiple elements and modifiers. An element is a part of a block that cannot be used independently, and it provides additional functionality and styling to the block. A modifier is a variation of a block or element that changes its appearance or behavior.
+
+Using BEM helps to create well-structured, modular and maintainable code that can be easily adapted to changing requirements. It also makes it easier for developers to collaborate on a project, as each block can be worked on independently and the resulting code is easy to understand and integrate into the rest of the application.
+
+### BEM Python
 The blocks are stored in a specific directory structure:
 ```
 blocks/
@@ -71,10 +81,59 @@ from bem.category import SimpleBlock, ComplexBlock
 
 MinimalComplexBlock = ComplexBlock(mod='minimal')
 complex_instance = MinimalComplexBlock(
-    someArg='hello',
-    extendedArg='world'
+    some_arg='hello',
+    small_mod_arg='world'
 )
-simple_instance = SimpleBlock()(simpleArg='first')
+simple_instance = SimpleBlock()(some_arg='first')
 ```
 In this example, `MinimalComplexBlock = ComplexBlock(mod='minimal')` is the construction of a complex class with the specified modificator. And `MinimalComplexBlock(...)` is creating an instance of the defined block.
+
+
+## Installation
+You can install `bempy` library via `pip` by running the following command in your terminal:
+```
+pip install bempy
+```
+
+After installation, you can import the library in your Python code by using:
+```
+import bempy
+```
+
+You can also install the latest version of the library directly from the source code by cloning the repository and running the following command:
+`python setup.py install`
+
+
+## Use Cases
+`bempy` has a wide range of use cases, beyond the original intended purpose of helping developers build complex UI components. Here are a few examples of how BEMPy can be applied:
+* **Data Science**: To data science projects to help structure and organize code. By breaking down data processing into blocks, it becomes easier to create and maintain complex data pipelines.
+* **Scientific Computing**: To structure complex mathematical models in a way that makes them more understandable, manageable and maintainable.
+* **Game Development**: The BEM methodology provides a way to structure game objects in a way that makes them easier to manage and maintain.
+* **API Development**: To build APIs that are easy to consume and understand. By breaking down a complex system into blocks and applying modularization techniques, it becomes easier to test, debug and maintain the API.
+* **Front-end Development**: To write clean, scalable and maintainable HTML, CSS and JavaScript for web front-end development. BEM methodology helps to encapsulate styles and behavior into blocks, making it easy to build and reuse UI components.
+* **Back-end Development**: By using BEM methodology to structure and organize code, it becomes easier to create and maintain complex systems.
+
+In each of these cases, **bempy**'s structure and methodology helps developers to create complex systems that are maintainable and scalable over time. Whether you are working on a small project or a large enterprise application, `bempy` can help you write clean, modular and maintainable code.
+
+## Contributing
+I'm appreciate and welcome contributions to `bempy`. If you are interested in contributing, there are several ways to get started:
+* **Report a bug**: If you find a bug or an issue in the library, please open an issue in the Github repository with a description of the problem and steps to reproduce it.
+* **Fix a bug**: If you have a fix for a bug, please submit a pull request with a description of the bug and how you fixed it.
+* **Implement a new feature**: If you want to add a new feature to the library, please open an issue in the Github repository to discuss your idea and the implementation details. After the discussion, you can submit a pull request with your implementation.
+* **Improve documentation**: If you see an opportunity to improve the documentation, feel free to submit a pull request with changes.
+* **Test the library**: If you have time, you can help us by testing the library and submitting bug reports or even fixes.
+
+## License
+The `bempy` library is licensed under the terms of the GNU General Public License v3.0 (GPL-3.0). This means that you have the freedom to use, modify, and distribute the software and its source code.
+
+By contributing to `bempy`, you agree to license your contributions under the same terms. This allows everyone to benefit from your contributions, while also protecting the future of the project.
+
+## References
+These references provide additional information on BEM methodology and its implementation in various technologies. They can help you understand the concept and best practices of BEM and provide guidance on how to apply it in your work:
+* BEM (Block Element Modifier) Methodology - https://en.bem.info/methodology/
+* CSS BEM - https://css-tricks.com/bem-101/
+* BEM Naming Convention - https://en.bem.info/methodology/naming-convention/
+* BEM Metodology in React - https://github.com/bem/bem-react
+* BEM Components Library - https://github.com/bem/bem-components
+* BEM Tools - https://en.bem.info/tools/
 
