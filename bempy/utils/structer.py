@@ -3,7 +3,6 @@ from os import getenv
 from os.path import dirname
 from pathlib import Path
 from inspect import getmro
-from .analyzer import Line, assume_line_type, assume_airwire_direction, is_line_power
 from typing import List
 import json
 from functools import lru_cache

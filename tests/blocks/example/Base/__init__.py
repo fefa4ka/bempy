@@ -6,9 +6,11 @@ class Base(Block):
     """
     some_param = 31337
 
-    def prepare(self, some_arg="str"):
+    def init(self, some_arg="str"):
         """
             some_param -- param description parsed by BEM Block
         """
 
-        print(self.name + ': Base prepare with param =', some_arg)
+        self.some_arg=some_arg
+        print(self.name + ': Base init with param =', some_arg)
+

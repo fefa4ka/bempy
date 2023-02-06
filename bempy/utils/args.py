@@ -1,82 +1,10 @@
-from copy import copy
-from inspect import getfullargspec, signature as func_signature
 import json
+from copy import copy
+from inspect import getfullargspec, getmembers, isroutine
+from inspect import signature as func_signature
+
 from . import uniq_f7
 from .parser import block_params_description
-from inspect import getmembers, isroutine
-
-
-def test_num(P):
-    if P == '' or P == '-': return True
-    try:
-        float(P)
-        return True
-    except ValueError:
-        return False
-
-def u(unit):
-    """Absolute float value of PySpice.Unit
-    """
-    if type(unit) in [int, float]:
-        return float(unit)
-    elif type(unit) == str:
-        if test_num(unit):
-            # unit = '10.2'
-            return float(unit)
-        else:
-            try:
-                # unit = '10 G'
-                return float(unit[:-1]) * _prefix[unit[-1]]
-            except:
-                return 0
-    else:
-        return float(unit.convert_to_power())
-
-
-def unit_from_arg(part, arg):
-    description = getattr(part, 'description')
-    part_type = 'current' if description.lower().find('current') != -1 else 'voltage'
-
-    unit = None
-    if arg.find('time') != -1 or arg.find('delay') != -1 or arg in ['pulse_width', 'period', 'duration']:
-        unit = u_s
-
-    if arg.find('frequency') != -1:
-        unit = u_Hz
-
-    if arg.find('amplitude') != -1 or arg.find('value') != -1 or arg.find('offset') != -1:
-        if part_type == 'current':
-            unit = u_A
-        else:
-            unit = u_V
-
-    return unit
-
-
-def min_period(sources):
-    period = 0 # Default 100 ms
-    min_period = None
-
-    for source in sources:
-        for arg in source['args'].keys():
-            if arg.find('time') != -1 or arg in ['pulse_width', 'period', 'duration']:
-                if source['args'][arg]['value']:
-                    time = float(source['args'][arg]['value'])
-                    if period < time:
-                        period = time
-
-                    if not min_period or min_period > time:
-                        min_period = time
-
-            if arg.find('frequency') != -1:
-                time = 1 / float(source['args'][arg]['value'])
-                if period < time:
-                    period = time
-
-                if not min_period or min_period > time:
-                    min_period = time
-
-    return period if min_period and period / min_period <= 20 else period / 5 if period else 1
 
 
 def value_to_strict(value):
@@ -156,9 +84,9 @@ def default_arguments(block):
     classes = block.classes
     classes.reverse()
     for cls in classes:
-        if hasattr(cls, 'prepare'):
-            args += getfullargspec(cls.prepare).args
-            signature = func_signature(cls.prepare)
+        if hasattr(cls, 'init'):
+            args += getfullargspec(cls.init).args
+            signature = func_signature(cls.init)
             defaults = { **defaults,
                      **{
                         k: v.default
@@ -175,7 +103,7 @@ def get_arguments(block):
     arguments = {}
 
     description = block_params_description(block)
-    defaults = getattr(block, 'defaults')
+    def_arguments, defaults = default_arguments(block)
 
     for arg in getattr(block, 'arguments', {}):
         default = getattr(block, arg, defaults.get(arg, None))

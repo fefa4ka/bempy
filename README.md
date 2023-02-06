@@ -26,67 +26,198 @@ Using BEM helps to create well-structured, modular and maintainable code that ca
 The blocks are stored in a specific directory structure:
 ```
 blocks/
-    category/
-        SimpleBlock/
+    game/
+        Character/
+            _gender/
+                male.py
+                female.py
+                non-binary.py
+            _race/
+                human.py
+                elf.py
+                orc.py
+            _class/
+                warrior.py
+                mage.py
+                rogue.py
             __init__.py
-        ComplexBlock/
-            _mod/
-                minimal.py
-                cheap.py
-                extended.py
+
+     data_science/
+        Model/
+            _algorithm/
+                logistic_regression.py
+                decision_tree.py
+            _hyperparameters/
+                default.py
+                optimized.py
+            _preprocessing/
+                standard_scaler.py
+                normalizer.py
+            __init__.py
+
+      scientific_computing/
+         Solver/
+            _method/
+                finite_difference.py
+                monte_carlo.py
+                particle_swarm.py
+            _precision/
+                low.py
+                high.py
+            __init__.py
 ```
 
-Each block has its own directory and `__init__.py` file. In the example, there is a `SimpleBlock` and a `ComplexBlock`.
+With these modificators, you can create any combination of characters that represent the type of person you want in the game. In the example, the `Character` block is stored in the `game` directory, and it has several modificators such as `_gender`, `_race`, and `_abilities`.
 
-The `SimpleBlock` class is defined in `SimpleBlock/__init__.py`:
+To use the `Character` block in your game, you can create an instance of the block with specific modificator values. For example:
+```python
+from bem.game import Character
+
+FemaleElf = Character(
+    gender='female',
+    race='elf',
+    abilities=['agility', 'intelligence']
+)
+
+gamer = FemaleElf(
+    level=3,
+    fertility=75,
+    mana=50
+)
+```
+
+Here, we are creating a female elf character by passing the values for the `gender`, `race`, and `abilities` modificators to the `Character` block.
+
+Additionally, we can define the level, health, and mana for this specific character instance by passing those values to `gamer = FemaleElf(...)`.
+
+With this, we have successfully created a unique instance of a female elf character with specific abilities and attributes that can be used in your game.
+
+The `Character` class is defined in `Character/__init__.py`:
 ```python
 from bempy import Block
 
 class Base(Block):
     """
-        Basic block. It accept argument 'some_arg' and have parameter 'some_param'.
+        A basic Character implementation
     """
-    some_param = 31337
 
-    def prepare(self, some_arg="str"):
+    def init(self, level=1):
         """
-            some_param -- param description parsed by BEM Block
+            level -- The level of character
         """
 
-        print(self.name + ': Base prepare with param =', some_arg)
+        print(self.name + ': Character created with level =', level)
 ```
 
-
-The `ComplexBlock` class is defined in `ComplexBlock/__init__.py`:
-```python
-from bempy.example import Child
-
-class Base(Child()):
-    complex_param = 'lala'
-
-    def prepare(self):
-        print(self.name + ':', 'Complex prepare')
-```
-
-The `ComplexBlock` can have modificators which are stored in the `_mod` directory. In the example, there is a `minimal` modificator defined in `ComplexBlock/_mod/minimal.py`:
+The Female `Modificator` class is defined in `Character/_gender/female.py`:
 ```python
 class Modificator:
-    def prepare(self, small_mod_arg=0):
-        print(self.name + ':', 'Small modificator preapre with small_mod_arg =', small_mod_arg)
+    """
+        A Female gender implementation
+    """
+
+    def init(self, fertility=100):
+        """
+            fertility -- is the capability to produce offspring through reproduction
+        """
+
+        print(self.name + ': Female created with fertility =', fertility)
 ```
 
-Now, you can export and build the block. To build a ComplexBlock with the minimal modificator, you can do:
+The Elf `Modificator` class is defined in `Character/_race/elf.py`:
 ```python
-from bem.category import SimpleBlock, ComplexBlock
+class Modificator:
+    """
+        A Elf race implementation
+    """
 
-MinimalComplexBlock = ComplexBlock(mod='minimal')
-complex_instance = MinimalComplexBlock(
-    some_arg='hello',
-    small_mod_arg='world'
-)
-simple_instance = SimpleBlock()(some_arg='first')
+    def init(self, mana=0):
+        """
+            mana -- The amount of mana
+        """
+
+        print(self.name + ': Elf created with mana =', mana)
 ```
-In this example, `MinimalComplexBlock = ComplexBlock(mod='minimal')` is the construction of a complex class with the specified modificator. And `MinimalComplexBlock(...)` is creating an instance of the defined block.
+
+
+```python
+>>> from bempy.game import Character
+>>> FemaleElf = Character(gender='female', race='elf')
+>>> gamer = FemaleElf(level=10, fertility=75, mana=50)
+game.Character: Character created with level = 10
+game.Character: Female created with fertility = 75
+game.Character: Elf created with mana = 50
+
+
+>>> Female = Character(gender='female', race='human')
+>>> ma = Female(level=86, fertility=100)
+game.Character: Character created with level = 86
+game.Character: Female created with fertility = 100
+```
+
+You could create instances of machine learning models using different algorithms, hyperparameters, and data preprocessing techniques. For example:
+```python
+from bempy.data_science import Model
+
+dt_model = Model(
+    algorithm='decision_tree',
+    hyperparameters='optimized',
+    preprocessing='normalizer'
+)
+```
+
+You could create instances of different types of solvers for scientific computing problems. For example:
+```python
+from bem.scientific_computing import Solver
+
+fd_solver = Solver(
+    method='finite_difference',
+    precision='high'
+)
+```
+
+Here is an example of how you could create instances of a backend using different components and configurations:
+```
+blocks/
+    backend/
+        Server/
+            _backend/
+                flask.py
+                django.py
+            _config/
+                debug.py
+                production.py
+            _extensions/
+                cors.py
+                db.py
+            __init__.py
+        Database/
+            _backend/
+                mongodb.py
+                mysql.py
+            _config/
+                local.py
+                remote.py
+            __init__.py
+```
+
+Using the backend directory structure, you could create instances of the backend with specific configurations and components. For example:
+```python
+from bempy.backend import Server
+
+FlaskApp = Server(
+    backend='flask',
+    config='debug',
+    extensions=['cors', 'db']
+)
+
+FlaskApp(
+    host='localhost',
+    port=8080,
+    capacity=1000
+)
+```
+In this example, `FlaskApp = Server(backend='flask', ...)` is the construction of a server block with the specified modificator. And `FlaskApp(...)` is creating an instance of the defined optimized server block.
 
 
 ## Installation

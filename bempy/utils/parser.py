@@ -274,7 +274,7 @@ def block_params_description(block):
         if cls == object:
             return doc
 
-        for method in block.doc_methods:
+        for method in getattr(block, 'doc_methods', ['init']):
             doc_str = hasattr(cls, method) and getattr(cls, method).__doc__
             if doc_str:
                 doc += doc_str

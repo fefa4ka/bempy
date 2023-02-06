@@ -1,13 +1,10 @@
-import json
-from collections import OrderedDict
-from functools import lru_cache
-from inspect import currentframe, getmro
+from inspect import getmro
 from os import path
-from typing import Any, List, Optional, Union, cast, Dict
+from typing import List, Dict
 
 from .base import Block as BaseBlock
 from .utils import uniq_f7
-from .utils.args import default_arguments, safe_serialize
+from .utils.args import safe_serialize
 from .utils.structer import (get_block_class, get_mod_classes, mods_from_dict,
                              mods_predefined)
 
@@ -173,7 +170,6 @@ class Build:
 
         Block.classes = list(getmro(Block))
         Block.models = self.blocks()
-        Block.arguments, Block.defaults = default_arguments(Block)
 
         return Block
 

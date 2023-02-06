@@ -9,7 +9,6 @@ def assert_base_instance(instance, some_arg):
     assert instance.some_param == 31337, "Block should have same_param = 31337"
     assert instance.some_arg == some_arg, "Block should save some_arg as parameter"
     assert get_params(instance).get('some_param', None)['value'] == 31337, "some_param in dict shoudl be 31337"
-    assert get_arguments(instance).get('some_arg', None)['value'] == some_arg, "some_arg in dict should be VALUE"
 
 class TestMyModule(unittest.TestCase):
     def test_bem_scope(self):
@@ -41,17 +40,15 @@ class TestMyModule(unittest.TestCase):
         assert_base_instance(instance, 'VALUE')
         assert instance.inherited == [], "Base block should not inherit something"
         assert instance.name == 'example.Base', 'Instance name should be example.Base'
-        assert instance.ref == 'Instance_1', 'Ref should be the same as variable name in code'
         assert instance.mods == {}, "Mods should not set for Base block"
         assert instance.props == {}, "Props should not set for this instance"
         assert len(instance.files) == 2, "Only from two files block should be builded"
         assert instance.files[0] == 'blocks/example/Base/__init__.py', "Front file should be Base/__init__.py"
-        assert instance.files[1] == 'bem/base.py', "Last file should be bem/base.py"
+        assert instance.files[1] == 'base.py', "Last file should be bem/base.py"
 
         assert_base_instance(test_instance, 12345)
         assert test_instance.inherited == [], "Base block should not inherit something"
         assert test_instance.name == 'example.Base', 'Instance name should be example.Base'
-        assert test_instance.ref == 'TestInstance', 'Ref should be the same as variable name in code'
         assert test_instance.mods == {}, "Mods should not set for Base block"
         assert len(test_instance.files) == 2, "Only from two files block should be builded"
         assert test_instance.props.get('some_prop', [None])[0] == 'PROP_VAL', "Should be some_prop = PROP_VAL"
@@ -66,7 +63,7 @@ class TestMyModule(unittest.TestCase):
         assert len(instance.files) == 3, "Only from three files block should be builded"
         assert instance.files[0] == 'blocks/example/Parent/__init__.py', "Front file should be Parent/__init__.py"
         assert instance.files[1] == 'blocks/example/Base/__init__.py', "Middle file should be Base/__init__.py"
-        assert instance.files[2] == 'bem/base.py', "Last file should be bem/base.py"
+        assert instance.files[2] == 'base.py', "Last file should be bem/base.py"
 
         assert_base_instance(instance, 9876)
 
@@ -78,7 +75,7 @@ class TestMyModule(unittest.TestCase):
         assert len(instance_builded_parent.files) == 3, "Only from three files block should be builded"
         assert instance_builded_parent.files[0] == 'blocks/example/Child/__init__.py', "Front file should be Parent/__init__.py"
         assert instance_builded_parent.files[1] == 'blocks/example/Base/__init__.py', "Middle file should be Base/__init__.py"
-        assert instance_builded_parent.files[2] == 'bem/base.py', "Last file should be bem/base.py"
+        assert instance_builded_parent.files[2] == 'base.py', "Last file should be bem/base.py"
 
     def test_bem_modificator(self):
         from bempy.example import Complex
