@@ -1,6 +1,8 @@
 # bempy - Python Block-Element-Modifier Library
 `bempy` is a library for building complex classes using BEM (Block-Element-Modifier) methodology.
 
+`bempy` provides approach for block composition that allows you to tackle a wide range of tasks with ease. Whether you're generating intricate `Character(...)` designs for video games, constructing robust `Server(...)` infrastructure for your backend systems, placing precise `Resistor(...)` configurations for your electronics projects, or creating interactive `Button(...)` interfaces for your frontend applications, bempy has you covered. Additionally, with the ability to define complex `Model(...)` structures for advanced data processing and science computing, bempy offers limitless possibilities for innovation and creativity.
+
 With `bempy`, you can build reusable blocks of code that can be easily inherited, modified, and extended to create new and complex classes. The library uses a hierarchical structure to define blocks, elements, and modifiers, making it simple to understand and maintain large projects.
 
 ## Features
@@ -8,7 +10,6 @@ With `bempy`, you can build reusable blocks of code that can be easily inherited
 * Support for inheritance, allowing blocks to inherit and extend the properties of other blocks
 * Ability to define default arguments and properties for blocks, making it easier to create instances of blocks
 * Support for automatic documentation extraction, allowing you to easily keep track of the purpose and usage of blocks and their components
-* A flexible structure
 
 ## Concept
 `bempy` is a library for building complex classes based on the BEM methodology.
@@ -214,11 +215,24 @@ FlaskApp = Server(
 FlaskApp(
     host='localhost',
     port=8080,
-    capacity=1000
+    db='mongodb'
 )
 ```
 In this example, `FlaskApp = Server(backend='flask', ...)` is the construction of a server block with the specified modificator. And `FlaskApp(...)` is creating an instance of the defined optimized server block.
 
+REPL Example:
+```python
+>>> from bempy.backend import Server, Database
+>>> FlaskApp = Server(backend='flask', config='debug', extensions=['db', 'cors'])
+>>> app = FlaskApp(host='localhost', port=8080, db='mongodb')
+backend.Server: Server created with host = localhost
+backend.Server: Flask server created on port = 8080
+backend.Server: Debug configuration enabled
+backend.Database: Database connection with name = localhost
+backend.Database: Mongodb initialized
+backend.Database: Local Database created from path = /var/db
+backend.Server: Database connection with db = mongodb
+```
 
 ## Installation
 You can install `bempy` library via `pip` by running the following command in your terminal:
@@ -234,6 +248,7 @@ import bempy
 You can also install the latest version of the library directly from the source code by cloning the repository and running the following command:
 `python setup.py install`
 
+You can play with examples in `tests` folder where some Blocks from documentation available in `blocks` directory.
 
 ## Use Cases
 `bempy` has a wide range of use cases, beyond the original intended purpose of helping developers build complex UI components. Here are a few examples of how BEMPy can be applied:
@@ -268,3 +283,6 @@ These references provide additional information on BEM methodology and its imple
 * BEM Components Library - https://github.com/bem/bem-components
 * BEM Tools - https://en.bem.info/tools/
 
+## Credits
+
+-   Alexander Kodratev (alex@nder.work)
