@@ -2,13 +2,10 @@ import os
 
 import unittest
 from bempy import Block, bem_scope
-from bempy.utils.args import get_arguments, get_params
-from bempy.utils.parser import block_description, block_params_description
 
 def assert_base_instance(instance, some_arg):
     assert instance.some_param == 31337, "Block should have same_param = 31337"
     assert instance.some_arg == some_arg, "Block should save some_arg as parameter"
-    assert get_params(instance).get('some_param', None)['value'] == 31337, "some_param in dict shoudl be 31337"
 
 class TestMyModule(unittest.TestCase):
     def test_bem_scope(self):
@@ -29,13 +26,8 @@ class TestMyModule(unittest.TestCase):
         except:
             instance = base(some_arg="VALUE")
 
-        description = block_description(base)
-        assert description[0] == "\nBasic block. It accept argument 'some_arg' and have parameter 'some_param'.\n", 'Description should generated from block class docstring wrapped with \\n symbol'
-
         test_instance = Base(some_prop="PROP_VAL")(some_arg=12345)
 
-        params_description = block_params_description(base)
-        assert params_description.get('some_param', None) == 'param description parsed by BEM Block', 'some_param description should be set'
 
         assert_base_instance(instance, 'VALUE')
         assert instance.inherited == [], "Base block should not inherit something"

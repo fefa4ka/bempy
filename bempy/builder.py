@@ -3,16 +3,21 @@ from os import path
 from typing import List, Dict
 
 from .base import Block as BaseBlock
-from .utils import uniq_f7
-from .utils.args import safe_serialize
+from .utils import uniq_f7, safe_serialize
 from .utils.structer import (get_block_class, get_mod_classes, mods_from_dict,
                              mods_predefined)
 
 ModsType = Dict[str, List[str]]
 
-
 class Build:
     def __init__(self, name: str, *args, **kwargs: ModsType):
+        """
+        Initializes a Build object with the given name and modifiers.
+
+        Args:
+        - name (str): the name of the Build object
+        - **kwargs (ModsType): keyword arguments that represent the modifiers
+        """
         self.name: str = name
         self.mods: ModsType = {}
         self.props: ModsType = {}
@@ -45,7 +50,6 @@ class Build:
         request_mods_json = safe_serialize(request_mods)
         self.mods = {}
 
-        #classes = list(getmro(self.base))[:-1]
         if hasattr(self.base, 'inherited'):
             mod_files, mod_classes, mods_loaded = get_mod_classes(self.name, request_mods_json)
             for cls in mod_classes:
@@ -172,4 +176,5 @@ class Build:
         Block.models = self.blocks()
 
         return Block
+
 

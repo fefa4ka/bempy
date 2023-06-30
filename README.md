@@ -276,6 +276,8 @@ By contributing to `bempy`, you agree to license your contributions under the sa
 
 ## References
 These references provide additional information on BEM methodology and its implementation in various technologies. They can help you understand the concept and best practices of BEM and provide guidance on how to apply it in your work:
+* [From Components to Systems: BEM Code for System-Level Design](https://medium.com/@fefa4ka/from-components-to-systems-bem-for-system-level-design-d6d4437b8a4)
+* [Coding Modular and Flexible Electronic Circuits with BEM Methodology and Parametric Design](https://medium.com/@fefa4ka/building-modular-and-flexible-electronic-circuits-with-bem-methodology-and-parametric-design-6e2637ce0c16)
 * BEM (Block Element Modifier) Methodology - https://en.bem.info/methodology/
 * CSS BEM - https://css-tricks.com/bem-101/
 * BEM Naming Convention - https://en.bem.info/methodology/naming-convention/

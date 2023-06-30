@@ -1,7 +1,8 @@
+import json
+
+
 def merge(source, destination):
     """
-    run me with nosetests --with-doctest file.py
-
     >>> a = { 'first' : { 'all_rows' : { 'pass' : 'dog', 'number' : '1' } } }
     >>> b = { 'first' : { 'all_rows' : { 'fail' : 'cat', 'number' : '5' } } }
     >>> merge(b, a) == { 'first' : { 'all_rows' : { 'pass' : 'dog', 'fail' : 'cat', 'number' : '5' } } }
@@ -23,3 +24,6 @@ def uniq_f7(seq):
     seen_add = seen.add
     return [x for x in seq if not (x in seen or seen_add(x))]
 
+def safe_serialize(obj):
+  default = lambda o: str(o)
+  return json.dumps(obj, default=default)

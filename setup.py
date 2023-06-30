@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='bempy',
-    version='0.3.1',
+    version='0.3.2',
     description='BEM-based class construction',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -24,3 +24,4 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]
 )
+
