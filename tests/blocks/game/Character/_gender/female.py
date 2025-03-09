@@ -7,5 +7,5 @@ class Modificator:
         """
             fertility -- is the capability to produce offspring through reproduction
         """
-
+        self.fertility = fertility
         print(self.name + ': Female created with fertility =', fertility)
