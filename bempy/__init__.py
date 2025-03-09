@@ -27,7 +27,8 @@ def get_created_blocks(block_type: Optional[Type] = None) -> Dict[str, Any]:
     for pair in Block.scope:
         if issubclass(pair[1].__class__, block_type or Block):
             block = pair[1]
-            blocks[block.ref] = block
+            # Use the block's id as the reference key
+            blocks[str(id(block))] = block
 
     return blocks
 
