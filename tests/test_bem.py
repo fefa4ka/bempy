@@ -80,7 +80,7 @@ class TestBEMPy(unittest.TestCase):
     def test_bem_build_with_builder(self):
         """Test block building using the Build class directly."""
         # Create a block using the Build class
-        base_block = Build('example.Base')
+        base_block = Build('example.Base').block
         instance = base_block(some_arg="DIRECT_BUILD")
         
         # Verify instance properties
