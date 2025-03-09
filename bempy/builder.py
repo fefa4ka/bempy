@@ -25,9 +25,11 @@ class Build:
         self.inherited = []
         self.files: List[str] = []
 
+        # Retrieve the base block class and file path
         base_file:str
         base_file, self.base = get_block_class(self.name)
 
+        # If the base block does not exist, set properties directly and return
         if not self.base:
             self.props = kwargs
             return
@@ -41,8 +43,10 @@ class Build:
         # InheritedBase + InheritedBase Modificator
         # BlockBase + BlockBase Modificator
 
+        # Initialize the list of base classes
         bases = [self.base]
 
+        # Combine predefined and provided modifiers
         request_mods = {
             **mods_predefined(self.base),
             **mods_from_dict(kwargs)
@@ -50,6 +54,7 @@ class Build:
         request_mods_json = safe_serialize(request_mods)
         self.mods = {}
 
+        # Check for inherited blocks
         if hasattr(self.base, 'inherited'):
             mod_files, mod_classes, mods_loaded = get_mod_classes(self.name, request_mods_json)
             for cls in mod_classes:
@@ -58,20 +63,25 @@ class Build:
                     **mods_predefined(cls)
                 }
 
+            # Ensure inherited is a list
             self.inherited = self.base.inherited
             if not isinstance(self.base.inherited, list):
                 self.inherited = [self.base.inherited]
 
+            # Add inherited blocks to bases
             for model in self.inherited:
                 block_base = model(**request_mods)
                 bases.append(block_base)
 
+        # Set the name of the base block
         self.base.name = self.name
         base_compound = []
 
+        # Process each base class
         for index, base in enumerate(bases):
             base_file, base_cls = get_block_class(base.name)
 
+            # Skip if the base class is already included in models
             if hasattr(self.base, 'models') and base_cls in self.base.models:
                 # FIX: How recompoud if mods changed?
                 # Maybe add only mod_class that not available
