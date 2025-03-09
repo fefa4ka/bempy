@@ -1,6 +1,6 @@
 from inspect import getmro
 from os import path
-from typing import List, Dict
+from typing import List, Dict, Any, Tuple, Type, Optional
 
 from .base import Block as BaseBlock
 from .utils import uniq_f7, safe_serialize
@@ -10,13 +10,29 @@ from .utils.structer import (get_block_class, get_mod_classes, mods_from_dict,
 ModsType = Dict[str, List[str]]
 
 class Build:
+    """
+    The Build class is responsible for constructing BEM components with their modifiers.
+    
+    This class handles block initialization, inheritance, and file tracking.
+    It provides methods for creating block instances with specific modifiers.
+    
+    Attributes:
+        name (str): The name of the block.
+        mods (ModsType): A dictionary of modifiers applied to the block.
+        props (ModsType): A dictionary of properties passed to the block.
+        models (list): A list of model classes that make up the block.
+        inherited (list): A list of inherited block classes.
+        files (List[str]): A list of source files used in building the block.
+    """
+    
     def __init__(self, name: str, *args, **kwargs: ModsType):
         """
         Initializes a Build object with the given name and modifiers.
 
         Args:
-        - name (str): the name of the Build object
-        - **kwargs (ModsType): keyword arguments that represent the modifiers
+            name (str): The name of the block to build.
+            *args: Variable length argument list.
+            **kwargs (ModsType): Keyword arguments that represent the modifiers to apply to the block.
         """
         self.name: str = name
         self.mods: ModsType = {}
@@ -155,7 +171,13 @@ class Build:
 
                 self.props[mod] = prop
 
-    def blocks(self):
+    def blocks(self) -> Tuple:
+        """
+        Returns a tuple of model classes that make up the block.
+        
+        Returns:
+            tuple: A tuple of model classes.
+        """
         if self.base:
             Models = self.models.copy()
 
@@ -166,7 +188,16 @@ class Build:
         return tuple(Models)
 
     @property
-    def block(self):
+    def block(self) -> Type:
+        """
+        Returns a new block type with the specified name, modifiers, and properties.
+        
+        This property creates a new class dynamically with the appropriate inheritance
+        and attributes.
+        
+        Returns:
+            Type: A dynamically created block class.
+        """
         self.inherited = []
 
         self.files.reverse()

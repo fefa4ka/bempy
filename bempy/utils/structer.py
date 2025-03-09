@@ -3,14 +3,17 @@ from os import getenv
 from os.path import dirname
 from pathlib import Path
 from inspect import getmro
-from typing import List
+from typing import List, Dict, Any, Tuple, Type, Optional
 import json
 from functools import lru_cache
 
 
-def bem_blocks_path():
+def bem_blocks_path() -> str:
     """
     Returns the path to the directory containing the BEM blocks.
+    
+    Returns:
+        str: The path to the blocks directory.
     """
     module_path = dirname(__file__)
     blocks_path = str(Path(module_path).parent / Path('blocks'))
@@ -18,10 +21,21 @@ def bem_blocks_path():
     return blocks_path
 
 @lru_cache
-def get_block_class(name: str):
+def get_block_class(name: str) -> Tuple[Optional[Path], Optional[Type]]:
+    """
+    Retrieves a block class by name (cached).
+    
+    This function is a cached wrapper around lookup_block_class.
+    
+    Args:
+        name (str): The name of the block.
+        
+    Returns:
+        Tuple[Optional[Path], Optional[Type]]: A tuple containing the path to the base file and the block class.
+    """
     return lookup_block_class(name)
 
-def lookup_block_class(name: str, libraries: List[str]=[]):
+def lookup_block_class(name: str, libraries: List[str]=[]) -> Tuple[Optional[Path], Optional[Type]]:
     """
     Looks up the block class for the given block name.
 
@@ -30,7 +44,7 @@ def lookup_block_class(name: str, libraries: List[str]=[]):
         libraries (List[str], optional): A list of library names to search for the block. Defaults to [].
 
     Returns:
-        Tuple[Path, Type[Base]]: A tuple containing the path to the base file and the block class.
+        Tuple[Optional[Path], Optional[Type]]: A tuple containing the path to the base file and the block class.
     """
     bem_blocks = bem_blocks_path()
     libraries += getenv('BEM_LIBRARIES') or ['blocks']
@@ -58,15 +72,15 @@ def lookup_block_class(name: str, libraries: List[str]=[]):
     return base_file, block_class
 
 
-def mods_from_dict(kwargs):
+def mods_from_dict(kwargs: Dict[str, Any]) -> Dict[str, List[str]]:
     """
     Converts a dictionary of modifications to a dictionary of lists.
 
     Args:
-        kwargs (dict): A dictionary of modifications. The values can be either a string divided by commas or a list.
+        kwargs (Dict[str, Any]): A dictionary of modifications. The values can be either a string divided by commas or a list.
 
     Returns:
-        dict: A dictionary of modifications with values as lists.
+        Dict[str, List[str]]: A dictionary of modifications with values as lists.
     """
     mods = {}
 
@@ -84,15 +98,15 @@ def mods_from_dict(kwargs):
     return mods
 
 
-def mods_predefined(base):
+def mods_predefined(base: Type) -> Dict[str, List[str]]:
     """
     Returns a dictionary of predefined modifications for the given block class.
 
     Args:
-        base (Type[Base]): The block class.
+        base (Type): The block class.
 
     Returns:
-        dict: A dictionary of predefined modifications.
+        Dict[str, List[str]]: A dictionary of predefined modifications.
     """
     mods = {}
 
@@ -110,21 +124,33 @@ def mods_predefined(base):
     return mods
 
 @lru_cache
-def get_mod_classes(name: str, selected_mods: str):
+def get_mod_classes(name: str, selected_mods: str) -> Tuple[List[str], List[Type], Dict[str, List[str]]]:
+    """
+    Retrieves modifier classes for a block (cached).
+    
+    This function is a cached wrapper around lookup_mod_classes.
+    
+    Args:
+        name (str): The name of the block.
+        selected_mods (str): A JSON string representing the selected modifiers.
+        
+    Returns:
+        Tuple[List[str], List[Type], Dict[str, List[str]]]: A tuple containing files, classes, and modifiers.
+    """
     mods = json.loads(selected_mods)
     return lookup_mod_classes(name, mods)
 
-def lookup_mod_classes(name: str, selected_mods, libraries=[]):
+def lookup_mod_classes(name: str, selected_mods: Dict[str, Any], libraries: List[str]=[]) -> Tuple[List[str], List[Type], Dict[str, List[str]]]:
     """
     Looks up the classes of the selected modifications.
 
     Args:
         name (str): The name of the block.
-        selected_mods (dict): A dictionary of selected modifications.
-        libraries (list, optional): A list of libraries to search for the block. Defaults to [].
+        selected_mods (Dict[str, Any]): A dictionary of selected modifications.
+        libraries (List[str], optional): A list of libraries to search for the block. Defaults to [].
 
     Returns:
-        tuple: A tuple containing a list of files, a list of classes, and a dictionary of modifications.
+        Tuple[List[str], List[Type], Dict[str, List[str]]]: A tuple containing a list of files, a list of classes, and a dictionary of modifications.
     """
     bem_blocks = bem_blocks_path()
     libraries += getenv('BEM_LIBRARIES') or ['blocks']

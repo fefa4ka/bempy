@@ -5,14 +5,23 @@ import os
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Any, Type
 
 from .base import Block
 from .builder import Build
 from .utils import merge
 
 
-def get_created_blocks(block_type: Optional[str]):
+def get_created_blocks(block_type: Optional[Type] = None) -> Dict[str, Any]:
+    """
+    Returns a dictionary of created block instances of the specified type.
+    
+    Args:
+        block_type (Optional[Type]): The type of blocks to return. If None, returns all blocks.
+        
+    Returns:
+        Dict[str, Any]: A dictionary of block instances with their references as keys.
+    """
     blocks = {}
 
     for pair in Block.scope:
@@ -23,7 +32,21 @@ def get_created_blocks(block_type: Optional[str]):
     return blocks
 
 
-def bem_scope(root='./blocks'):
+def bem_scope(root: str = './blocks') -> Dict[str, Dict[str, Any]]:
+    """
+    Scans a directory structure to find available blocks and their modifiers.
+    
+    Args:
+        root (str, optional): The root directory to scan for blocks. Defaults to './blocks'.
+        
+    Returns:
+        Dict[str, Dict[str, Any]]: A dictionary containing the available blocks and their modifiers.
+        
+    Example:
+        >>> blocks = bem_scope('./my_blocks')
+        >>> print(blocks['game']['Character']['gender'])
+        ['male', 'female', 'non-binary']
+    """
     blocks = defaultdict(dict)
 
     # Get Blocks from current root scopes
@@ -64,7 +87,20 @@ def bem_scope(root='./blocks'):
     return dict(blocks)
 
 
-def bem_scope_module(scopes, root=''):
+def bem_scope_module(scopes: Dict[str, Any], root: str = '') -> None:
+    """
+    Creates module-level imports for blocks.
+    
+    This function makes blocks available for import directly from the bempy namespace.
+    
+    Args:
+        scopes (Dict[str, Any]): A dictionary of scopes, typically from bem_scope().
+        root (str, optional): The root module name. Defaults to ''.
+        
+    Example:
+        >>> bem_scope_module(bem_scope())
+        >>> from bempy.game import Character
+    """
     blocks = defaultdict(dict)
 
     # Get Blocks from current root scopes
@@ -83,12 +119,15 @@ def bem_scope_module(scopes, root=''):
     if root:
         sys.modules[__name__ + root] = type(root, (object,), blocks)
 
+# Path to the built-in blocks
 module_blocks = os.path.dirname(__file__) + '/blocks/'
 
+# Merge built-in blocks with user blocks
 bem_scope_dict = merge(
     bem_scope(module_blocks),
     bem_scope()
 )
 
+# Make blocks available for import
 bem_scope_module(bem_scope_dict)
 

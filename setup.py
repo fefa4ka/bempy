@@ -16,12 +16,21 @@ setup(
     license='GPLv3+',
     packages=find_packages(exclude=["tests"]),
     test_suite="tests",
+    entry_points={
+        'console_scripts': [
+            'bempy=bempy.cli:main',
+        ],
+    },
     classifiers=[
         'Intended Audience :: Developers',
         "Programming Language :: Python :: 3",
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         "Operating System :: OS Independent",
         'Topic :: Software Development :: Libraries :: Python Modules'
-    ]
+    ],
+    package_data={
+        'bempy': ['docs/**/*.md'],
+    },
+    include_package_data=True,
 )
 

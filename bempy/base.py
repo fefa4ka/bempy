@@ -1,8 +1,20 @@
 from inspect import getfullargspec
-from typing import List
+from typing import List, Dict, Any, Optional, Tuple
 
 
 class Block:
+    """
+    The base Block class that all BEM blocks inherit from.
+    
+    This class provides the foundation for creating BEM blocks with modifiers.
+    It handles initialization, inheritance, and string representation.
+    
+    Attributes:
+        scope (list): Global BEM scope that tracks all block instances.
+        owner (list): Tracks the current active block.
+        files (List[str]): List of source files used in building the block.
+        inherited (list): List of block classes that this block inherits from.
+    """
     # Global BEM scope
     scope = []
 
@@ -21,8 +33,15 @@ class Block:
     def __init__(self, *args, **kwargs):
         """
         Initialize Block instance and perform required setup.
+        
+        This method sets up the block in the global scope, initializes all models,
+        and passes the appropriate arguments to each model's init method.
+        
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments that will be passed to the init method
+                     of each model in the block.
         """
-
         # Update the global scope with the current block instance
         if not len(self.scope):
             self.root = True
@@ -42,7 +61,15 @@ class Block:
 
         self.owner.pop()
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the block.
+        
+        The string includes the block name, modifiers, and a unique identifier.
+        
+        Returns:
+            str: A formatted string representing the block.
+        """
         if hasattr(self, '__pretty_name'):
             return self.__pretty_name
 
@@ -61,5 +88,11 @@ class Block:
 
         return self.__pretty_name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """
+        Returns a string representation of the block (same as __str__).
+        
+        Returns:
+            str: A formatted string representing the block.
+        """
         return str(self)
