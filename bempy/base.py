@@ -51,13 +51,15 @@ class Block:
         self.owner.append(self)
 
         for cls in self.models:
-            mount_args_keys = getfullargspec(cls.init).args
-            if len(mount_args_keys) == 1:
-                args = []
+            # Check if the class has an init method
+            if hasattr(cls, 'init'):
+                mount_args_keys = getfullargspec(cls.init).args
+                if len(mount_args_keys) == 1:
+                    args = []
 
-            mount_args = {key: value for key, value in kwargs.items()
-                          if key in mount_args_keys}
-            cls.init(self, *args, **mount_args)
+                mount_args = {key: value for key, value in kwargs.items()
+                            if key in mount_args_keys}
+                cls.init(self, *args, **mount_args)
 
         self.owner.pop()
 
