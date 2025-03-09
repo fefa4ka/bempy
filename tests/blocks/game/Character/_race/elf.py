@@ -7,5 +7,5 @@ class Modificator:
         """
             mana -- The amount of mana
         """
-
+        self.mana = mana
         print(self.name + ': Elf created with mana =', mana)
