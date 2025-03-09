@@ -80,12 +80,12 @@ class TestBEMPy(unittest.TestCase):
     def test_bem_build_with_builder(self):
         """Test block building using the Build class directly."""
         # Create a block using the Build class
-        base_block = Build('example/Base')
+        base_block = Build('example.Base')
         instance = base_block(some_arg="DIRECT_BUILD")
         
         # Verify instance properties
         self.assert_base_instance(instance, 'DIRECT_BUILD')
-        self.assertEqual(instance.name, 'example/Base', 'Instance name should match the build name')
+        self.assertEqual(instance.name, 'example.Base', 'Instance name should match the build name')
     
     def test_bem_inherited_build(self):
         """Test block inheritance functionality."""

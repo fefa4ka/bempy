@@ -50,6 +50,8 @@ def lookup_block_class(name: str, libraries: List[str]=[]) -> Tuple[Optional[Pat
     libraries += getenv('BEM_LIBRARIES') or ['blocks']
     libraries.append(bem_blocks)
 
+    # Convert slashes to dots for module import but keep original for path
+    module_name = name.replace('/', '.')
     block_dir = name.replace('.', '/')
     base_file = block_class = module_path = None
 
@@ -65,7 +67,7 @@ def lookup_block_class(name: str, libraries: List[str]=[]) -> Tuple[Optional[Pat
             break
 
     if base_file and base_file.exists():
-        block_class = import_module(module_path + '.' + name).Base
+        block_class = import_module(module_path + '.' + module_name).Base
     else:
         return None, None
 
