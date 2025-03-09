@@ -69,7 +69,6 @@ bempy list
 
 For detailed documentation, see:
 - [API Reference](docs/api/index.md)
-- [Implementation Guide](IMPLEMENTATION_PLAIN.md)
 
 ## License
 
