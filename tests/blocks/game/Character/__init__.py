@@ -9,5 +9,5 @@ class Base(Block):
         """
             level -- The level of character
         """
-
+        self.level = level
         print(self.name + ': Character created with level =', level)
